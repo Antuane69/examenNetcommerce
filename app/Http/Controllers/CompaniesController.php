@@ -10,13 +10,17 @@ class CompaniesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($id = null)
     {   
-        $data = Companies::select('id', 'name')
-        ->with(['tasks' => function ($query) {
+        $query = Companies::select('id', 'name')->with(['tasks' => function ($query) {
             $query->with('user_relation');
-        }])
-        ->get();
+        }]);
+    
+        if ($id) {
+            $query->where('id', $id);
+        }
+    
+        $data = $query->get();
     
         $data->transform(function ($item) {
             $item->tasks->transform(function ($task) {
@@ -35,6 +39,33 @@ class CompaniesController extends Controller
         
         return $data;
     }
+    
+    // public function search($id)
+    // {
+    //     $data = Companies::select('id', 'name')
+    //     ->with(['tasks' => function ($query) {
+    //         $query->with('user_relation');
+    //     }])
+    //     ->where('id',$id)
+    //     ->get();
+    
+    //     $data->transform(function ($item) {
+    //         $item->tasks->transform(function ($task) {
+    //             return [
+    //                 'id' => $task->id,
+    //                 'name' => $task->name,
+    //                 'description' => $task->description,
+    //                 'user' => $task->user_relation->name,
+    //                 'is_completed' => $task->is_completed,
+    //                 'start_at' => $task->start_at,
+    //                 'expired_at' => $task->expired_at
+    //             ];
+    //         });
+    //         return $item;
+    //     });
+
+    //     return $data;
+    // }
 
     /**
      * Store a newly created resource in storage.

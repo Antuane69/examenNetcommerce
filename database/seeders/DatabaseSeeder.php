@@ -19,9 +19,16 @@ class DatabaseSeeder extends Seeder
         Users::create(["name" => "Akira"]);
         Users::create(["name" => "Antuane"]);
 
-        Users::factory()->count(8)->create();
+        Companies::create(["name" => "Netcommerce"]);
+        Companies::create(["name" => "Netcommerce"]);
+        Companies::create(["name" => "Netcommerce"]);
 
-        Companies::factory()->count(5)->create();
+        Tasks::create(["company_id" => 1 ,"name" => "task1", "description" => "task content", "user_id" => 1]);
+        Tasks::create(["company_id" => 1 ,"name" => "task2", "description" => "task content", "user_id" => 1]);
+
+        Users::factory()->count(3)->create();
+
+        Companies::factory()->count(2)->create();
 
         Tasks::factory()->count(5)->create();
     }
